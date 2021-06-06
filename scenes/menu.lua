@@ -56,29 +56,29 @@ function scene:create( event )
     background.x = _CX
     background.y = _CY
 
-    local lblTitle = display.newText("Square Run", _CX, 100, "assets/fonts/Galada.ttf", 70)
+    local lblTitle = display.newText("Square Run", _CX, 50, "assets/fonts/Galada.ttf", 70)
     lblTitle.fill = { 1, 1, 1 }
     _grpMain:insert(lblTitle)
 
-    local btnPlay = display.newRoundedRect( _grpMain, _CX, _CY , 220, 80, 20)
+    local btnPlay = display.newRoundedRect( _grpMain, _CX, _CY -50 , 220, 80, 20)
     btnPlay.fill = { 0.5, 1, 1 }
     btnPlay.alpha = 0.4;
-    local txtPlay = display.newText("Play ", _CX, _CY, "assets/fonts/Galada.ttf", 50)
+    local txtPlay = display.newText("Game 1", _CX, _CY-50, "assets/fonts/Galada.ttf", 50)
     txtPlay.fill = { 0, 0, 0 } 
     _grpMain:insert(txtPlay)
 
     btnPlay:addEventListener("tap", gotoGame)
 
-    -- local btnPlay2 = display.newRoundedRect( _grpMain, _CX, _CY +100, 220, 80, 20)
-    -- btnPlay2.fill = {0.5, 1, 1}
-    -- btnPlay2.alpha = 0.4;
-    -- local txtPlay2 = display.newText("Play", _CX, _CY + 100, "assets/fonts/Galada.ttf", 50)
-    -- txtPlay2.fill = {0,0,0}
-    -- _grpMain:insert(txtPlay2)
+    local btnPlay2 = display.newRoundedRect( _grpMain, _CX, _CY +50, 220, 80, 20)
+    btnPlay2.fill = {0.5, 1, 1}
+    btnPlay2.alpha = 0.4;
+    local txtPlay2 = display.newText("Game2", _CX, _CY + 50, "assets/fonts/Galada.ttf", 50)
+    txtPlay2.fill = {0,0,0}
+    _grpMain:insert(txtPlay2)
 
-    -- btnPlay2:addEventListener("tap", gotoGame2)
+    btnPlay2:addEventListener("tap", gotoGame2)
 
-    local lblSettings = display.newText("Settings", _CX, _H -50, "assets/fonts/Galada.ttf", 26)
+    local lblSettings = display.newText("Settings", _CX, _H -40, "assets/fonts/Galada.ttf", 26)
     lblSettings.fill = { 1, 1, 1 }
     _grpMain:insert(lblSettings)
 

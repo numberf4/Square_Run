@@ -21,7 +21,7 @@ local _grpHud
 -- Mix Point
 local _playing = false
 local _score = 0
-local _blockWidth = _W * 0.25
+local _blockWidth = _W * 0.229
 local _words = {"Awesome", "Nice", "Wow", "Great"}
 
 -- Hud
@@ -76,7 +76,7 @@ local function gameOver()
     utilities:setTmpScore(_score)
 
     for i=0, 15 do -- We want 15 parts
-        local dot = display.newRect(_grpWorld, _hero.x + 20, _hero.y, 5, 5) 
+        local dot = display.newRect(_grpWorld, _hero.x + 20, _hero.y, 7, 7) 
         local x = dot.x + (math.random(-100, 100)) 
         local y = dot.y + (math.random(-100, 100))
 
@@ -170,7 +170,16 @@ local function increaseLevel()
         transition.to(_lblScore, {time=150, xScale=1, yScale=1, delay=150})
 
         local rand = math.random(1, #_words)
-        local lblRandom = display.newText(_words[rand], _CX, _CY, "assets/fonts/Galada.ttf", 46)
+        local xWord,yWord
+        if _hero.y > _CY then
+            xWord = _CX
+            yWord = _CY
+        end
+        if _hero.y <= _CY then
+            xWord = _CX 
+            yWord = _CY + 100
+        end
+        local lblRandom = display.newText(_words[rand], xWord, yWord, "assets/fonts/Galada.ttf", 46)
         lblRandom.fill = { 1, 1, 1 }
         _grpHud:insert(lblRandom)
 
@@ -179,17 +188,17 @@ local function increaseLevel()
         end})
 
         if _score >=8 and _score <16 then
-            _hero.speed = 2.4
+            _hero.speed = 8
         end
 
         if _score >=16 and _score <32 then
-            _hero.speed = 2.8
+            _hero.speed = 9
         end
 
         if _score >= 32 then
-            _hero.speed = 3.2
+            _hero.speed = 10
         end
-        if _hero.y > 400 then
+        if _hero.y >= _CY then
             transition.to(_b1, {time=100, y=_b1.y-20})
             transition.to(_b2, {time=100, y=_b2.y-20})
             transition.to(_b3, {time=100, y=_b3.y-20})
@@ -197,9 +206,9 @@ local function increaseLevel()
             transition.to(_hero, {time=100, y=_hero.y-20})
 
         else
-            transition.to(_backgrounds[1], {time=100, y=_backgrounds[1].y+20})
-            transition.to(_backgrounds[2], {time=100, y=_backgrounds[2].y+20})
-            transition.to(_backgrounds[3], {time=100, y=_backgrounds[3].y+20})
+            transition.to(_backgrounds[1], {time=100, y=_backgrounds[1].y+50})
+            transition.to(_backgrounds[2], {time=100, y=_backgrounds[2].y+50})
+            transition.to(_backgrounds[3], {time=100, y=_backgrounds[3].y+50})
 
             if _backgrounds[1].y > _H then
                 _backgrounds[1].y = _backgrounds[1].y - (_H * 2)
@@ -357,7 +366,7 @@ function scene:create( event )
 
     -- Score label
 
-    _lblScore = display.newText("0", _CX, 150, "assets/fonts/Galada.ttf", 78) 
+    _lblScore = display.newText("0", _CX, 120, "assets/fonts/Galada.ttf", 78) 
     _lblScore.fill = { 1, 1, 1 }
     _lblScore.alpha = 0 
     _grpHud:insert(_lblScore)
@@ -402,7 +411,7 @@ function scene:create( event )
     -- Hero
     _hero = display.newRect( _grpMain, 10, _H - 26, 12, 12 )
     _hero.colorID = 3 
-    _hero.speed = 2
+    _hero.speed = 7
     _hero.direction = 'right'
     _hero.crashed = false
     _hero.canIncreaseScore = true 

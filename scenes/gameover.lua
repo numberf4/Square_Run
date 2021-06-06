@@ -4,8 +4,6 @@
 local composer = require("composer")
 local relayout = require("libs.relayout")
 local utilities = require("classes.utilities")
-local transition2 = require("transition2")
-
 --
 -- Set variables
 
@@ -67,7 +65,7 @@ function scene:create( event )
 
     -- Title
 
-    local title = display.newText("Game over", _CX, 100, "assets/fonts/Galada.ttf", 80)
+    local title = display.newText("Game over", _CX, 40, "assets/fonts/Galada.ttf", 80)
     title.fill = { 1, 1, 1 }
     _grpContent:insert(title)   
 
@@ -79,14 +77,14 @@ function scene:create( event )
     lblScore.fill = { 1, 1, 1 }
     _grpContent:insert(lblScore)
 
-    local lblCurrentHighscore = display.newText("Highscore: " .. utilities:getHighscore(), _CX, _CY - 5, "assets/fonts/Galada.ttf", 16)
+    local lblCurrentHighscore = display.newText("Highscore: " .. utilities:getHighscore(), _CX, _CY +10, "assets/fonts/Galada.ttf", 26)
     lblCurrentHighscore.fill = { 1, 1, 1 }
     _grpContent:insert(lblCurrentHighscore)
 
     --
 
     if isHighscore then
-        local lblHighscore = display.newText("HIGHSCORE!", _CX, _CY - 80, "assets/fonts/Galada.ttf", 30)
+        local lblHighscore = display.newText("HIGHSCORE!", _CX, _CY - 70, "assets/fonts/Galada.ttf", 30)
         lblHighscore.fill = { 1, 1, 1 }
         _grpContent:insert(lblHighscore)
 
@@ -97,43 +95,6 @@ function scene:create( event )
         transition.to(lblHighscore, {time=200, xScale=1.5, yScale=1.5, delay=800})
         transition.to(lblHighscore, {time=200, xScale=1, yScale=1, delay=1000})
 
-
-        for i = 1, 200 do
-            local leaf = display.newRoundedRect(_CX, _CY, 10, 10, 2)
-            leaf.alpha = 0
-            leaf.rotation = math.random(0, 360)
-            _grpConfetti:insert(leaf)
-           
-            local colors = {
-                { 209/255, 42/255, 95/255 },
-                { 122/255, 184/255, 79/255 },
-                { 77/255, 157/255, 191/255 },
-                { 201/255, 201/255, 85/255 }
-            }
-            leaf:setFillColor(unpack(colors[math.random(1,#colors)]))
-    
-            transition.to(leaf, {math.random(300, 1860), y=leaf.y - math.random(100, 200), x=math.random(_CX - 150, _CX + 150), alpha=1, transition=easing.inOutQuad, onComplete=function()
-                transition2.fallingLeaf(leaf, {
-                    delay = 0,
-                    speed = 0.25,
-                    verticalIntensity = 0.7,
-                    horizontalIntensity = 0.5,
-                    rotationIntensity = 0.25,
-                    horizontalDirection = "random",
-                    randomness = 0.75,
-                    zRotateParams = {
-                        shadingDarknessIntensity = 0.5,
-                        shadingBrightnessIntensity = 0.25,
-                    },
-                    cancelWhen = function()
-                        return (not leaf.y) or (leaf.y > display.contentHeight + 100)
-                    end,
-                    onComplete = function(target)
-                        target:removeSelf()
-                    end,
-                })
-            end})
-        end
     end
 
     -- Restart button
@@ -143,12 +104,12 @@ function scene:create( event )
 
     btnPlay:addEventListener("tap", gotoGame)
 
-    local lblPlay = display.newText("Restart", _CX, _CY + 84, "assets/fonts/Galada.ttf", 50)
+    local lblPlay = display.newText("Restart", _CX, _CY +80 , "assets/fonts/Galada.ttf", 50)
     lblPlay.fill = { 0, 0, 0 }
     _grpContent:insert(lblPlay)
 
     -- Menu button
-    local btnMenu = display.newText("Menu", _CX, _H - 100, "assets/fonts/Galada.ttf", 26)
+    local btnMenu = display.newText("Menu", _CX, _H -20, "assets/fonts/Galada.ttf", 26)
     btnMenu.fill = { 1, 1, 1 }
     _grpContent:insert(btnMenu)
 

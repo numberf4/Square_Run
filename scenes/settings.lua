@@ -82,44 +82,44 @@ function scene:create( event )
     _grpMain:insert(title)
 
     -- Sound title and button
-    local lblSoundsTitle = display.newText("Sounds", _CX - 80, _CY - 50, "assets/fonts/Galada.ttf", 22)
+    local lblSoundsTitle = display.newText("Sounds", _CX - 80, _CY, "assets/fonts/Galada.ttf", 22)
     lblSoundsTitle.fill = { 1, 1, 1 }
     _grpMain:insert(lblSoundsTitle)
 
-    _lblSoundsButton = display.newText(utilities:checkSounds(), _CX - 80, _CY, "assets/fonts/Galada.ttf", 38)
+    _lblSoundsButton = display.newText(utilities:checkSounds(), _CX - 80, _CY + 50, "assets/fonts/Galada.ttf", 38)
     _lblSoundsButton.fill = {1, 1, 1}
     _grpMain:insert(_lblSoundsButton)
 
     _lblSoundsButton:addEventListener("tap", toggleSounds)
 
     -- Music title and button
-    local lblMusicTitle = display.newText("Music", _CX + 80, _CY - 50, "assets/fonts/Galada.ttf", 22)
+    local lblMusicTitle = display.newText("Music", _CX + 80, _CY, "assets/fonts/Galada.ttf", 22)
     lblMusicTitle.fill = { 1, 1, 1 }
     _grpMain:insert(lblMusicTitle)
 
-    _lblMusicButton = display.newText(utilities:checkMusic(), _CX + 80, _CY, "assets/fonts/Galada.ttf", 38)
+    _lblMusicButton = display.newText(utilities:checkMusic(), _CX + 80, _CY+50, "assets/fonts/Galada.ttf", 38)
     _lblMusicButton.fill = {1, 1, 1}
     _grpMain:insert(_lblMusicButton)
 
     _lblMusicButton:addEventListener("tap", toggleMusic)
 
     -- Created by
-    local lblCreatedby = display.newText("Created by Nguyen Van Tu - CT1", _CX, _H - 100, "assets/fonts/Galada.ttf", 22)
+    local lblCreatedby = display.newText("Created by Nguyen Van Tu - CT1", _CX, _H - 30, "assets/fonts/Galada.ttf", 22)
     lblCreatedby.fill = {0.5, 1, 1}
     _grpMain:insert(lblCreatedby)
 
     -- Close button
-    local btnMenu = display.newRect(_grpMain, _W - 30, 30, 50, 50)
+    local btnMenu = display.newRect(_grpMain, _W - 80, 30, 50, 50)
     btnMenu.alpha = 0.01
 
     btnMenu:addEventListener("tap", gotoMenu)
 
-    local cross1 = display.newLine( _grpMain, _W - 40, 40, _W - 20, 20 )
+    local cross1 = display.newLine( _grpMain, _W - 80, 40, _W - 60, 20 )
     cross1.y = cross1.y - 50
     cross1:setStrokeColor( 1, 1, 1, 1 )
     cross1.strokeWidth = 2
 
-    local cross2 = display.newLine( _grpMain, _W - 40, 20, _W - 20, 40 )
+    local cross2 = display.newLine( _grpMain, _W - 80, 20, _W - 60, 40 )
     cross2.y = cross2.y - 50
     cross2:setStrokeColor( 1, 1, 1, 1 )
     cross2.strokeWidth = 2
