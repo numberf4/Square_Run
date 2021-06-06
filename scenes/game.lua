@@ -152,10 +152,7 @@ local function checkCollision(block)
 
     local left  = (block.contentBounds.xMin) <= _hero.contentBounds.xMin and (block.contentBounds.xMax) >= _hero.contentBounds.xMin
     local right = (block.contentBounds.xMin) >= _hero.contentBounds.xMin and (block.contentBounds.xMin) <= _hero.contentBounds.xMax
-    local up    = (block.contentBounds.yMin) <= _hero.contentBounds.yMin and (block.contentBounds.yMax) >= _hero.contentBounds.yMin
-    local down  = (block.contentBounds.yMin) >= _hero.contentBounds.yMin and (block.contentBounds.yMin) <= _hero.contentBounds.yMax + 2
-
-    return (left or right) and (up or down)
+    return (left or right)
 end
 
 local function increaseLevel()
@@ -377,7 +374,7 @@ function scene:create( event )
     _b1 = display.newRect( _grpMain, _blockWidth * 0.5, _H - 20, _blockWidth, 15)
     _b1.colorID = 1
     _b1.fill = _clrRed
-    -- _b1.anchorY = 0
+    _b1.anchorY = 0
 
     _blocks[#_blocks+1] = _b1
 

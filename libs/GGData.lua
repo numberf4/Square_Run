@@ -165,81 +165,6 @@ function GGData:get( name )
 	return self[ name ] or self[ tostring( name) ]
 end
 
-function GGData:isValueHigher( name, otherValue )
-	if type( otherValue ) == "string" then
-		otherValue = self:get( otherValue )
-	end
-	return self[ name ] > otherValue
-end
-
-
-function GGData:isValueLower( name, otherValue )
-	if type( otherValue ) == "string" then
-		otherValue = self:get( otherValue )
-	end
-	return self[ name ] < otherValue
-end
-
-
-function GGData:isValueEqual( name, otherValue )
-	if type( otherValue ) == "string" then
-		otherValue = self:get( otherValue )
-	end
-	return self[ name ] == otherValue
-end
-
-
-function GGData:hasValue( name )
-	return self[ name ] ~= nil and true or false
-end
-
-
-
-function GGData:setIfNew( name, value )
-	if self[ name ] == nil then
-		self[ name ] = value
-		self:storeIntegrityHash( name, value )
-	end
-end
-
-
-function GGData:setIfHigher( name, value )
-	if self[ name ] and value > self[ name ] or not self[ name ] then
-		self[ name ] = value
-		self:storeIntegrityHash( name, value )
-	end
-end
-
-
-function GGData:setIfLower( name, value )
-	if self[ name ] and value < self[ name ] or not self[ name ] then
-		self[ name ] = value
-		self:storeIntegrityHash( name, value )
-	end
-end
-
-
-function GGData:increment( name, amount )
-	if not self[ name ] then
-		self:set( name, 0 )
-	end
-	if self[ name ] and type( self[ name ] ) == "number" then
-		self[ name ] = self[ name ] + ( amount or 1 )
-		self:storeIntegrityHash( name, value )
-	end
-end
-
-
-function GGData:decrement( name, amount )
-	if not self[ name ] then
-		self:set( name, 0 )
-	end
-	if self[ name ] and type( self[ name ] ) == "number" then
-		self[ name ] = self[ name ] - ( amount or 1 )
-		self:storeIntegrityHash( name, value )
-	end
-end
-
 
 function GGData:clear()
 	for k, v in pairs( self ) do
@@ -254,72 +179,6 @@ function GGData:clear()
 	end
 end
 
-
-function GGData:delete( id )
-
-	if not id then
-		id = self.id
-	end
-
-	local path = system.pathForFile( self.path, system.DocumentsDirectory )
-
-	local success = lfs.chdir( path )
-
-	os.remove( path .. "/" .. id .. ".box" )
-
-	if not success then
-		return
-	end
-
-end
-
-
-function GGData:setSync( enabled, id )
-
-	-- If no id was passed in then assume we're working with a pre-loaded GGData object so use its id
-	if not id then
-		id = self.id
-	end
-
-	native.setSync( self.path .. "/" .. id .. ".box", { iCloudBackup = enabled } )
-
-end
-
-function GGData:getSync( id )
-
-	-- If no id was passed in then assume we're working with a pre-loaded GGData object so use its id
-	if not id then
-		id = self.id
-	end
-
-	return native.getSync( self.path .. "/" .. id .. ".box", { key = "iCloudBackup" } )
-
-end
-
-function GGData:enableIntegrityControl( algorithm, key )
-	self.integrityAlgorithm = algorithm
-	self.integrityKey = key
-	self.hash = self.hash or {}
-	self.integrityControlEnabled = true
-end
-
---- Disables integrity checking.
-function GGData:disableIntegrityControl()
-	self.integrityAlgorithm = nil
-	self.integrityKey = nil
-	self.hash = nil
-	self.integrityControlEnabled = false
-end
-
-
-function GGData:verifyItemIntegrity( name, value )
-	-- just hash the tostring() version and compare against that!
-	if toString( value ) then
-		local generatedHash = crypto.hmac( self.integrityAlgorithm, toString( value ), self.integrityKey, false )
-		local storedHash = self.hash[ name ]
-		return generatedHash == storedHash
-	end
-end
 
 function GGData:storeIntegrityHash( name, value )
 
@@ -337,22 +196,6 @@ function GGData:storeIntegrityHash( name, value )
 
 end
 
---- Updates/sets the hash value of the all stored values.
-function GGData:updateAllIntegrityHashes()
-
-	for k, v in pairs( self ) do
-		if k ~= "integrityControlEnabled"
-			and k ~= "integrityAlgorithm"
-			and k ~= "integrityKey"
-			and k ~= "hash"
-			and k ~= "id"
-			and k ~= "path"
-			and  toString( v ) then
-				self:storeIntegrityHash( k, v )
-		end
-	end
-
-end
 
 function GGData:verifyIntegrity()
 
