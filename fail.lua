@@ -40,11 +40,11 @@ function scene:create( event )
 	background.anchorY = 0
 	background.x, background.y = 0, 0
 	
-	playBtn = display.newText("Play Again", 50, 50, "assets/fonts/JosefinSans-Regular.ttf",25)
+	playBtn = display.newText("Play Again", 50, 50, "assets/fonts/JosefinSansRegular.ttf",25)
 	playBtn.x, playBtn.y = 130, 240
 	playBtn:addEventListener("tap", onPlayBtnRelease)
 	
-	mainBtn = display.newText("Main Menu", 50, 50, "assets/fonts/JosefinSans-Regular.ttf",25)
+	mainBtn = display.newText("Main Menu", 50, 50, "assets/fonts/JosefinSansRegular.ttf",25)
 	mainBtn.x, mainBtn.y = 350, 240
 	mainBtn:addEventListener("tap", onMainBtnRelease)
 

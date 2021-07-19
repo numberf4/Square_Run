@@ -3,9 +3,9 @@
 -- https://docs.coronalabs.com/guide/basics/configSettings
 --
 
-local aspectRatio = display.pixelHeight / display.pixelWidth
-local width = 360
-local height = width * aspectRatio
+-- local aspectRatio = display.pixelHeight / display.pixelWidth
+-- local width = 360
+-- local height = width * aspectRatio
 
 application =
 {

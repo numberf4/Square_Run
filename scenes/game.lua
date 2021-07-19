@@ -21,7 +21,7 @@ local _grpHud
 -- Mix Point
 local _playing = false
 local _score = 0
-local _blockWidth = _W * 0.229
+local _blockWidth = _W * 0.2292
 local _words = {"Awesome", "Nice", "Wow", "Great"}
 
 -- Hud
@@ -38,13 +38,13 @@ local _backgrounds = {}
 local _blockIDS = {1, 2, 3, 4}
 local _blocks = {}
 
--- Colors
+-- Color
 local _clrRed = {209/255, 42/255, 95/255}
 local _clrGreen = {122/255, 184/255, 79/255}
 local _clrBlue = {77/255, 157/255, 191/255}
 local _clrYellow = {201/255, 201/255, 85/255}
 
--- Sounds
+-- Sound
 local _sndJump = audio.loadStream("assets/sounds/jump.wav")
 local _sndLose = audio.loadStream("assets/sounds/crash.wav")
 local _click = audio.loadStream("assets/sounds/click.wav")
@@ -75,7 +75,7 @@ local function gameOver()
 
     utilities:setTmpScore(_score)
 
-    for i=0, 15 do -- We want 15 parts
+    for i=0, 15 do
         local dot = display.newRect(_grpWorld, _hero.x + 20, _hero.y, 7, 7) 
         local x = dot.x + (math.random(-100, 100)) 
         local y = dot.y + (math.random(-100, 100))
@@ -268,7 +268,7 @@ function enterFrame()
             _hero.x = _hero.x - _hero.speed
         end
 
-        if _hero.x > (_W - _hero.width / 2) then
+        if _hero.x > (_W - 43 - _hero.width / 2) then
             if not _hero.canIncreaseScore then
                 _hero.direction = 'left'
                 _hero.canIncreaseScore = true
@@ -279,7 +279,7 @@ function enterFrame()
             end
         end
 
-        if _hero.x < (0 + _hero.width / 2) then
+        if _hero.x < ( _hero.width / 2) then
             if not _hero.canIncreaseScore then
                 _hero.direction = 'right'
                 _hero.canIncreaseScore = true
@@ -290,8 +290,6 @@ function enterFrame()
             end
         end
 
-        -- Emitter
-        
             local size = math.random(4, 6)
             local x = math.random(20, 40)
             local y = math.random(3, 10)

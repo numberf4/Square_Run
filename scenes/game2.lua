@@ -11,6 +11,7 @@ local scene = composer.newScene()
 local physics = require "physics"
 physics.start(); physics.pause()
 local backgroundMusic = audio.loadStream("assets/sounds/loop1.mp3")
+local explosionSound = audio.loadStream("Audio/explosion.mp3")
 
 function loadTextFile( fname, base )
     local base = base or system.DocumentsDirectory
@@ -24,109 +25,46 @@ function loadTextFile( fname, base )
     return txtData
 end
 
-savedCurrentAttempt = loadTextFile("currentAttempt.txt")
-savedTotalAttempt = loadTextFile("totalAttempt.txt")
+function savetoCurrentAttemptFile(data)
+    local path = system.pathForFile("currentAttempt.txt", system.DocumentsDirectory)
+    local file = io.open(path, "w")
+    local fileContent = file:read("*n")
+    local newData = data 
+    file:write(newData)
+    io.close(file)
+end
+    
+function savetoCurrentPercentFile(data)
+    local path = system.pathForFile("currentPercent.txt", system.DocumentsDirectory)
+    local file = io.open(path, "w")
+    local fileContent = file:read("*n")
+    local newData = data 
+    file:write(newData)
+    io.close(file)
+end
 
-savedCompletions = loadTextFile("100Completions.txt")
+local savedCurrentAttempt = loadTextFile("currentAttempt.txt")
+local savedCurrentPercent = loadTextFile("currentPercent.txt")
 
-savedCurrentPercent = loadTextFile("currentPercent.txt")
-savedTotalPercent = loadTextFile("totalPercent.txt")
-
-    function savetoCurrentAttemptFile(data)
-        local path = system.pathForFile("currentAttempt.txt", system.DocumentsDirectory)
-        local file = io.open(path, "w+")
-        
-        local fileContent = file:read("*a")
-        local newData = data 
-        file:write(newData)
-        
+local currentPercent = 0
+local currentAttempt = 0
+savetoCurrentPercentFile(currentPercent)
     
-        io.close(file)
-    end
-    
-    function savetoTotalAttemptFile(data)
-        local path = system.pathForFile("totalAttempt.txt", system.DocumentsDirectory)
-        local file = io.open(path, "w+")
-        
-        local fileContent = file:read("*a")
-        local newData = data 
-        file:write(newData)
-        
-    
-        io.close(file)
-    end
-    
-    
-    function savetoCompletionsFile(data)
-        local path = system.pathForFile("100Completions.txt", system.DocumentsDirectory)
-        local file = io.open(path, "w+")
-        
-        local fileContent = file:read("*a")
-        local newData = data 
-        file:write(newData)
-        io.close(file)
-    end
-    
-    function savetoCurrentPercentFile(data)
-        local path = system.pathForFile("currentPercent.txt", system.DocumentsDirectory)
-        local file = io.open(path, "w+")
-        
-        local fileContent = file:read("*a")
-        local newData = data 
-        file:write(newData)
-        io.close(file)
-    end
-    
-    
-    function savetoTotalPercentFile(data)
-        local path = system.pathForFile("totalPercent.txt", system.DocumentsDirectory)
-        local file = io.open(path, "w+")
-        
-        local fileContent = file:read("*a")
-        local newData = data 
-        file:write(newData)
-        io.close(file)
-    end
-
-    
-    currentPercent = 0
+if savedCurrentAttempt == nil then
+    savetoCurrentAttemptFile(currentAttempt)
+else 
+    currentAttempt = savedCurrentAttempt + 1
+    savetoCurrentAttemptFile(currentAttempt)
+end
+     
+if savedCurrentPercent == nil then
     savetoCurrentPercentFile(currentPercent)
-    
-    if savedCurrentAttempt == nil then
-        currentAttempt = 1
-        savetoCurrentAttemptFile(currentAttempt)
-        else 
-        currentAttempt = savedCurrentAttempt + 1
-        savetoCurrentAttemptFile(currentAttempt)
-    end
-    
-    if savedTotalAttempt == nil then
-        totalAttempt = 1
-        savetoTotalAttemptFile(totalAttempt)
-        else 
-        totalAttempt = savedTotalAttempt + 1
-        savetoTotalAttemptFile(totalAttempt)
-    end
-    
-    
-    if savedCompletions == nil then
-        completions = 0
-        savetoCompletionsFile(completions)
-    end
-    
-    if savedCurrentPercent == nil then
-        savetoCurrentPercentFile(currentPercent)
-    end
-    
-    if savedTotalPercent == nil then
-        totalPercent = 0
-        savetoTotalPercentFile(totalPercent)
-    end
+end
 
 function scene:create( event )
     local sceneGroup = self.view
     local screenW, screenH, halfW = display.actualContentWidth, display.actualContentHeight, display.actualContentWidth*0.5
-    
+
     local function jumpBlockRight(event)
 
         if ( event.phase == "began" ) then
@@ -451,7 +389,7 @@ local function onSpikeWallCollision(event)
     local collision = event.other
     if collision.myName == "greenBlock" then
         if isAudioPlaying then
-            audio.play ( explosionSound )
+            audio.play ( explosionSound, {channel = 2} )
         end
     spikeWall3.isVisible = true
     greenBlock.isVisible = false
@@ -1672,35 +1610,21 @@ end
 local function goToHundred()
 
     function loadTextFile( fname, base )
-    local base = base or system.DocumentsDirectory
-    local path = system.pathForFile( fname, base )
-    local txtData
-    local file = io.open( path, "r" )
-    if file then
-       txtData = file:read( "*n" )
-       io.close( file )
-    end
-    return txtData
-end
-
-savedBestAttempt = loadTextFile("bestAttempt.txt")
-savedCurrentAttempt = loadTextFile("currentAttempt.txt")
-      
-if savedBestAttempt == 0 then
-    bestAttempt = savedCurrentAttempt
-    savetoBestAttemptFile(bestAttempt)
-    else if tonumber(savedBestAttempt) > tonumber(savedCurrentAttempt) then
-        bestAttempt = savedCurrentAttempt
-        savetoBestAttemptFile(bestAttempt)
+        local base = base or system.DocumentsDirectory
+        local path = system.pathForFile( fname, base )
+        local txtData
+        local file = io.open( path, "r" )
+        if file then
+            txtData = file:read( "*n" )
+            io.close( file )
         end
+        return txtData
     end
+
+
+    savedCurrentAttempt = loadTextFile("currentAttempt.txt")
         
-    if currentAttempt == 1 then
-        firstAttempt = savedFirstAttempt + 1
-        savetoFirstAttemptFile(firstAttempt)
-    end
-        
-    completions = savedCompletions + 1
+    completions =  1
     savetoCompletionsFile(completions)
     currentPercent = 100
     savetoCurrentPercentFile(currentPercent)
@@ -1744,30 +1668,38 @@ end
     sceneGroup:insert(completion)
     
     background = display.newImageRect( "levelBackground2.png", 90, 380 )
+    jumpLeft = display.newText("Jump\n Left",2, 240,"assets/fonts/JosefinSansRegular.ttf", 20)
     background.x, background.y = 0, 355
     background.rotation = 180
     physics.addBody( background, "static", { density= 10, friction=0.1, bounce=0.2 } )
     background:addEventListener("touch", jumpBlockLeft)
     sceneGroup:insert(background)
+    sceneGroup:insert(jumpLeft)
     
     background2 = display.newImageRect( "levelBackground2.png", 90, 380 )
+    jumpRight = display.newText("Jump\n Right",473, 240,"assets/fonts/JosefinSansRegular.ttf", 20)
     background2.x, background2.y = 480, 355
     physics.addBody( background2, "static", { density= 10, friction=0.1, bounce=0.2 } )
     background2:addEventListener("touch", jumpBlockRight)
     sceneGroup:insert(background2)
-    
+    sceneGroup:insert(jumpRight)
+
     background3 = display.newImageRect( "levelBackground.png", 90, 380 )
+    moveLeft = display.newText("Move\n Left",2, 80,"assets/fonts/JosefinSansRegular.ttf", 20)
     background3.x, background3.y = 0, -30
     background3.rotation = 180
     physics.addBody( background3, "static", { density= 10, friction=0.1, bounce=0 } )
     background3:addEventListener("touch", moveBlockLeft)
     sceneGroup:insert(background3)
+    sceneGroup:insert(moveLeft)
     
     background4 = display.newImageRect( "levelBackground.png", 90, 380 )
+    moveRight = display.newText("Move\n Rigth",473, 80,"assets/fonts/JosefinSansRegular.ttf", 20)
     background4.x, background4.y = 480, -30
     physics.addBody( background4, "static", { density= 10, friction=0.1, bounce=0 } )
     background4:addEventListener("touch", moveBlockRight)
     sceneGroup:insert(background4)
+    sceneGroup:insert(moveRight)
     
 --[
     blueWall = display.newImageRect( "blueWall.png", 50, 30 )
@@ -5638,29 +5570,9 @@ function scene:hide( event )
     
     if event.phase == "will" then
     
-    if savedCurrentPercent ~= 100 then
-    
-    function loadTextFile( fname, base )
-    local base = base or system.DocumentsDirectory
-    local path = system.pathForFile( fname, base )
-    local txtData
-    local file = io.open( path, "r" )
-    if file then
-       txtData = file:read( "*n" )
-       io.close( file )
-    end
-    return txtData
-end
-
-    --savetoCurrentPercentFile(currentPercent)  
-    
+    if savedCurrentPercent ~= 100 then    
     savedCurrentPercent = loadTextFile("currentPercent.txt")
-
-    
     end
-    
-    totalPercent = savedCurrentPercent + savedTotalPercent
-    savetoTotalPercentFile(totalPercent)
     
         audio.stop()
         audio.rewind()
@@ -5668,36 +5580,21 @@ end
         
     elseif phase == "did" then
         -- Called when the scene is now off screen
-        
-        
-
     end 
     
 end
 
 function scene:destroy( event )
 
-    -- Called prior to the removal of scene's "view" (sceneGroup)
-    -- 
-    -- INSERT code here to cleanup the scene
-    -- e.g. remove display objects, remove touch listeners, save state, etc.
-
     local sceneGroup = self.view
-    
-    
-    --package.loaded[physics] = nil
-    --physics = nil
 end
 
 ---------------------------------------------------------------------------------
-
 -- Listener setup
 scene:addEventListener( "create", scene )
 scene:addEventListener( "show", scene )
 scene:addEventListener( "hide", scene )
 scene:addEventListener( "destroy", scene )
-
-
 -----------------------------------------------------------------------------------------
 
 return scene

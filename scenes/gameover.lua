@@ -65,11 +65,9 @@ function scene:create( event )
 
     -- Title
 
-    local title = display.newText("Game over", _CX, 40, "assets/fonts/Galada.ttf", 80)
+    local title = display.newText("Game over", _CX, 45, "assets/fonts/Galada.ttf", 80)
     title.fill = { 1, 1, 1 }
     _grpContent:insert(title)   
-
-    --
 
     local isHighscore = utilities:setHighscore(utilities:getTmpScore())
 

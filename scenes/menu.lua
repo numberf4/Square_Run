@@ -4,8 +4,6 @@ local composer = require("composer")
 local relayout = require("libs.relayout")
 local utilities = require("classes.utilities")
 
---
--- Set variables
 
 -- Layout
 local _W, _H, _CX, _CY = relayout._W, relayout._H, relayout._CX, relayout._CY 
@@ -18,7 +16,6 @@ local _grpMain
 
 -- Sounds
 local clickSound = audio.loadStream("assets/sounds/click.wav")
-
 
 --
 -- Local functions
@@ -38,8 +35,6 @@ local function gotoSettings()
     composer.gotoScene( "scenes.settings" )
 end
 
-
---
 -- Scene events functions
 
 function scene:create( event )
@@ -50,13 +45,11 @@ function scene:create( event )
 
     self.view:insert(_grpMain)
 
-    --
-
     local background = display.newImageRect(_grpMain, "assets/images/background.jpeg", _W, _H)
     background.x = _CX
     background.y = _CY
 
-    local lblTitle = display.newText("Square Run", _CX, 50, "assets/fonts/Galada.ttf", 70)
+    local lblTitle = display.newText("Square Run", _CX, 45, "assets/fonts/Galada.ttf", 70)
     lblTitle.fill = { 1, 1, 1 }
     _grpMain:insert(lblTitle)
 
@@ -72,7 +65,7 @@ function scene:create( event )
     local btnPlay2 = display.newRoundedRect( _grpMain, _CX, _CY +50, 220, 80, 20)
     btnPlay2.fill = {0.5, 1, 1}
     btnPlay2.alpha = 0.4;
-    local txtPlay2 = display.newText("Game2", _CX, _CY + 50, "assets/fonts/Galada.ttf", 50)
+    local txtPlay2 = display.newText("Game 2", _CX, _CY + 50, "assets/fonts/Galada.ttf", 50)
     txtPlay2.fill = {0,0,0}
     _grpMain:insert(txtPlay2)
 
@@ -81,7 +74,6 @@ function scene:create( event )
     local lblSettings = display.newText("Settings", _CX, _H -40, "assets/fonts/Galada.ttf", 26)
     lblSettings.fill = { 1, 1, 1 }
     _grpMain:insert(lblSettings)
-
     lblSettings:addEventListener("tap", gotoSettings)
 
 end
@@ -106,8 +98,6 @@ function scene:destroy( event )
     elseif ( event.phase == "did" ) then
     end
 end
-
-
 --
 -- Scene event listeners
 
